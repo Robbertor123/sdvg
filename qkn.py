@@ -1,66 +1,69 @@
 import sys
 
 from PyQt6.QtWidgets import QApplication, QWidget, QPushButton
-from PyQt6.QtWidgets import QLCDNumber, QLabel, QLineEdit
+from PyQt6.QtWidgets import QLabel, QLineEdit
 
 
-class MiniCalculator(QWidget):
+class Arifmometr(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle('Миникалькулятор')
-        self.setFixedSize(400, 150)
+        self.setWindowTitle('Арифмометр')
+        self.setFixedSize(300, 90)
 
-        self.number_1 = QLineEdit(self)
-        self.number_1.move(10, 10)
-        self.number_1.resize(100, 30)
+        self.first_value = QLineEdit(self)
+        self.first_value.setText('0')
+        self.first_value.move(10, 10)
+        self.first_value.resize(40, 30)
 
-        self.number_2 = QLineEdit(self)
-        self.number_2.move(10, 90)
-        self.number_2.resize(100, 30)
+        self.second_value = QLineEdit(self)
+        self.second_value.setText('0')
+        self.second_value.move(140, 10)
+        self.second_value.resize(40, 30)
 
-        self.calculate_button = QPushButton(self)
-        self.calculate_button.setText('->')
-        self.calculate_button.move(170, 30)
-        self.calculate_button.resize(30, 70)
+        self.add_button = QPushButton(self)
+        self.add_button.setText('+')
+        self.add_button.move(50, 10)
+        self.add_button.resize(30, 30)
 
-        self.result_sum = QLCDNumber(self)
-        self.result_sum.move(270, 10)
-        self.result_sum.resize(110, 30)
+        self.substract_button = QPushButton(self)
+        self.substract_button.setText('-')
+        self.substract_button.move(80, 10)
+        self.substract_button.resize(30, 30)
 
-        self.result_sub = QLCDNumber(self)
-        self.result_sub.move(270, 45)
-        self.result_sub.resize(110, 30)
+        self.multiply_button = QPushButton(self)
+        self.multiply_button.setText('*')
+        self.multiply_button.move(110, 10)
+        self.multiply_button.resize(30, 30)
 
-        self.result_mul = QLCDNumber(self)
-        self.result_mul.move(270, 80)
-        self.result_mul.resize(110, 30)
+        self.result = QLineEdit(self)
+        self.result.setText('0')
+        self.result.setReadOnly(True)
+        self.result.move(190, 10)
+        self.result.resize(40, 30)
 
-        self.result_div = QLCDNumber(self)
-        self.result_div.move(270, 115)
-        self.result_div.resize(110, 30)
-
+        self.label = QLabel(self)
+        self.label.setText('=')
+        self.label.move(180, 15)
         self.start()
 
     def start(self):
-        self.calculate_button.clicked.connect(self.on_click)
+        self.add_button.clicked.connect(self.on_click)
+        self.substract_button.clicked.connect(self.wow)
+        self.multiply_button.clicked.connect(self.rex)
+
+    def wow(self):
+        self.result.setText(f"{int(self.first_value.text()) - int(self.second_value.text())}")
+
+    def rex(self):
+        self.result.setText(f"{int(self.first_value.text()) * int(self.second_value.text())}")
 
     def on_click(self):
-        self.result_sum.display(f"{int(self.number_1.text()) + int(self.number_2.text())}")
-        self.result_sub.display(f"{int(self.number_1.text()) - int(self.number_2.text())}")
-        self.result_mul.display(f"{int(self.number_1.text()) * int(self.number_2.text())}")
-        if self.number_2.text() != '0':
-            a = float(f"{(int(self.number_1.text()) / int(self.number_2.text()))}")
-            if a.is_integer():
-                self.result_div.display(a)
-            else:
-                self.result_div.display(f"{'%.3f' % (int(self.number_1.text()) / int(self.number_2.text()))}")
-        else:
-            self.result_div.display('Error')
+        self.result.setText(f"{int(self.first_value.text()) + int(self.second_value.text())}")
 
-
+#бу, испугался?
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    fc = MiniCalculator()
+    fc = Arifmometr()
     fc.show()
     sys.exit(app.exec())
